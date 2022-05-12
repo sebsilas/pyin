@@ -26,11 +26,13 @@ pyin <- function(file_name, transform_file = NULL,
 
   if(.Platform$OS.type == "unix") {
 
+    op_sys <- "linux64" # NB only one working for now, but eventually update to host multiple OS's
+
     vamp_cmd <- get_correct_vamp_cmd(type)
 
     args <- pyin_construct_args(transform_file, vamp_cmd, file_name, normalise)
 
-    sa_out <- pyin_construct_command(args, hidePrint)
+    sa_out <- pyin_construct_command(args, hidePrint, op_sys)
 
     if(length(sa_out) == 0) {
       res <- pyin_handle_null(type, file_name)
@@ -88,9 +90,11 @@ pyin_construct_args <- function(transform_file, vamp_cmd, file_name, normalise) 
   args
 }
 
-pyin_construct_command <- function(args, hidePrint) {
+pyin_construct_command <- function(args, hidePrint, os) {
 
-  cmd <- system.file('sonic-annotator', package = 'pyin')
+  cmd <- system.file(paste0('bin/', os, '/sonic-annotator'), package = 'pyin')
+
+  print(cmd)
 
   if(hidePrint) {
     sa_out <- system2(command = cmd,
@@ -123,5 +127,5 @@ get_correct_vamp_cmd <- function(type) {
   }
 }
 
-
+# t <- test_pyin()
 
