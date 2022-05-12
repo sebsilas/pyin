@@ -1,4 +1,14 @@
 
+#' Test pyin is working
+#'
+#' @return
+#' @export
+#'
+#' @examples
+test_pyin <- function() {
+  pyin(file_name = system.file('extdata/test.wav', package = 'pyin'))
+}
+
 #' Compute pYIN on an audio track
 #'
 #' @param file_name
@@ -14,25 +24,29 @@
 pyin <- function(file_name, transform_file = NULL,
                  normalise = FALSE, hidePrint = TRUE, type = "notes") {
 
+  if(.Platform$OS.type == "unix") {
 
-  vamp_cmd <- get_correct_vamp_cmd(type)
+    vamp_cmd <- get_correct_vamp_cmd(type)
 
-  args <- pyin_construct_args(transform_file, vamp_cmd, file_name, normalise)
+    args <- pyin_construct_args(transform_file, vamp_cmd, file_name, normalise)
 
-  sa_out <- pyin_construct_command(args, hidePrint)
+    sa_out <- pyin_construct_command(args, hidePrint)
 
-  if(length(sa_out) == 0) {
-    res <- pyin_handle_null(type, file_name)
+    if(length(sa_out) == 0) {
+      res <- pyin_handle_null(type, file_name)
+    } else {
+
+      res <- read.csv(text = sa_out, header = FALSE) %>% tibble::as_tibble()
+      res <- pyin_tidy(res, type)
+
+      file_name <- res$V1[[1]]
+
+      res <- res %>% dplyr::select(-V1)
+
+      res <- tibble::tibble(file_name, res)
+    }
   } else {
-
-    res <- read.csv(text = sa_out, header = FALSE) %>% tibble::as_tibble()
-    res <- pyin_tidy(res, type)
-
-    file_name <- res$V1[[1]]
-
-    res <- res %>% dplyr::select(-V1)
-
-    res <- tibble::tibble(file_name, res)
+    warning('Currently only unix supported.')
   }
 }
 
@@ -110,7 +124,4 @@ get_correct_vamp_cmd <- function(type) {
 }
 
 
-
-# pyin(file_name = '/Users/sebsilas/true.wav')
-# r <-pyin(file_name = '/Users/sebsilas/true.wav')
 
