@@ -24,9 +24,12 @@ test_pyin <- function() {
 pyin <- function(file_name, transform_file = NULL,
                  normalise = FALSE, hidePrint = TRUE, type = "notes") {
 
+
   if(.Platform$OS.type == "unix") {
 
     op_sys <- "linux64" # NB only one working for now, but eventually update to host multiple OS's
+
+    set_vamp_variable(op_sys)
 
     vamp_cmd <- get_correct_vamp_cmd(type)
 
@@ -51,6 +54,21 @@ pyin <- function(file_name, transform_file = NULL,
     warning('Currently only unix supported.')
   }
 }
+
+set_vamp_variable <- function(os) {
+
+  if(os == "linux64") {
+    dir <- system.file('bin/linux64', package = 'pyin')
+    #system2(command = 'export', args =  paste0('VAMP_PATH=', dir))
+    Sys.setenv(VAMP_PATH = dir)
+    # Sys.getenv("VAMP_PATH")
+    # system2(command = 'export', args =  paste0('BLAH=', dir))
+    # system2(command = 'echo', args =  'echo $BLAH') # test?
+  }
+
+}
+
+paste0('set BLAH=', dir)
 
 pyin_tidy <- function(res, type) {
   if(type == "notes") {
@@ -94,7 +112,7 @@ pyin_construct_command <- function(args, hidePrint, os) {
 
   cmd <- system.file(paste0('bin/', os, '/sonic-annotator'), package = 'pyin')
 
-  print(cmd)
+  #print(cmd)
 
   if(hidePrint) {
     sa_out <- system2(command = cmd,
