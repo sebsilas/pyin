@@ -33,6 +33,7 @@ pyin <- function(file_name, transform_file = NULL,
 
     vamp_cmd <- get_correct_vamp_cmd(type)
 
+
     args <- pyin_construct_args(transform_file, vamp_cmd, file_name, normalise)
 
     sa_out <- pyin_construct_command(args, hidePrint, op_sys)
@@ -58,17 +59,28 @@ pyin <- function(file_name, transform_file = NULL,
 set_vamp_variable <- function(os) {
 
   if(os == "linux64") {
-    dir <- system.file('bin/linux64', package = 'pyin')
-    #system2(command = 'export', args =  paste0('VAMP_PATH=', dir))
-    Sys.setenv(VAMP_PATH = dir)
-    # Sys.getenv("VAMP_PATH")
-    # system2(command = 'export', args =  paste0('BLAH=', dir))
-    # system2(command = 'echo', args =  'echo $BLAH') # test?
+    # package library path
+    pkg_path <- system.file('bin/linux64', package = 'pyin')
+
+    # in case the user already has VAMP plugins installed
+
+    vamp_path0 <- system2("echo", args = "$VAMP_PATH")
+
+    # potential library path one
+    vamp_path1 <- homePath <- paste0(fs::path_home(), '/Library/Audio/Plug-Ins/Vamp')
+
+    # potential library path 2
+    vamp_path2 <- '/Library/Audio/Plug-Ins/Vamp'
+
+    # put all together separated by a colon
+    dirs <- paste(pkg_path, vamp_path0, vamp_path1, vamp_path2, sep = ":")
+
+    system2("echo", args = "$VAMP_PATH", env = paste0('VAMP_PATH=', dirs))
+
   }
 
 }
 
-paste0('set BLAH=', dir)
 
 pyin_tidy <- function(res, type) {
   if(type == "notes") {
@@ -112,7 +124,9 @@ pyin_construct_command <- function(args, hidePrint, os) {
 
   cmd <- system.file(paste0('bin/', os, '/sonic-annotator'), package = 'pyin')
 
-  #print(cmd)
+  print('soo??')
+  print(cmd)
+  print(args)
 
   if(hidePrint) {
     sa_out <- system2(command = cmd,
