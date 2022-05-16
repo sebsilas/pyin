@@ -12,6 +12,10 @@ LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
     dplyr,
+    fs,
+    hrep (>= 0.15.0),
     magrittr
 URL: https://github.com/sebsilas/pyin
 BugReports: https://github.com/sebsilas/pyin/issues
+Remotes: 
+    pmcharrison/hrep
