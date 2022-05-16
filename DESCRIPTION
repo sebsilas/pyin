@@ -14,7 +14,8 @@ Imports:
     dplyr,
     fs,
     hrep (>= 0.15.0),
-    magrittr
+    magrittr,
+    tibble
 URL: https://github.com/sebsilas/pyin
 BugReports: https://github.com/sebsilas/pyin/issues
 Remotes: 
