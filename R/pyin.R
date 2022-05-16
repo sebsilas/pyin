@@ -75,8 +75,11 @@ set_vamp_variable <- function(os) {
     # put all together separated by a colon
     dirs <- paste(pkg_path, vamp_path0, vamp_path1, vamp_path2, sep = ":")
 
-    system2("echo", args = "$VAMP_PATH", env = paste0('VAMP_PATH=', dirs))
+    Sys.setenv(VAMP_PATH = dirs)
+    Sys.getenv("VAMP_PATH")
 
+  } else {
+    warning("Only Linux64 is currently supported")
   }
 
 }
@@ -124,16 +127,12 @@ pyin_construct_command <- function(args, hidePrint, os) {
 
   cmd <- system.file(paste0('bin/', os, '/sonic-annotator'), package = 'pyin')
 
-  print('soo??')
-  print(cmd)
-  print(args)
-
   if(hidePrint) {
     sa_out <- system2(command = cmd,
                       args = args,
                       stdout = TRUE, stderr = FALSE)
   } else {
-    sa_out <- system2(command = sonic_annotator_location,
+    sa_out <- system2(command = cmd,
                       args = args,
                       stdout = TRUE)
   }
