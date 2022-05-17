@@ -14,11 +14,11 @@ devtools::install_github("sebsilas/pyin")
 ```r 
 library(pyin)
 
-# First test using our test function
+# First test using our test function:
 
 test <- test_pyin()
 
-# If the pyin setup was successful on your system, 'test' should contain a 10x5 data with the transcribed note events of a the demo audio file we have distributed with the package.
+# If the pyin setup was successful on your system, 'test' should contain a 10x5 data with the transcribed note events of a demo audio file we have distributed with the package.
 
 # Try your own audio file:
 
@@ -40,13 +40,13 @@ my_audio_transcription %>% produce_extra_melodic_features()
 
 ## Notes
 
-See https://vamp-plugins.org/sonic-annotator/ for information about allowed file types.
+See https://vamp-plugins.org/sonic-annotator/ for information about allowed file types etc.
 
 It is possible to also supply transform files, as described there, via the R package version of pYIN (see the `transform_file` argument)
 
 ### Compatability
 
-This R package currently only supports Windows and Mac 64. If you require support for other systems, please get in touch.
+This R package currently only supports Windows and Mac 64-bit. If you require support for other systems, please get in touch.
 
 ## References
 
