@@ -2,14 +2,14 @@
 
 pyin is an R package which wraps the [pYIN](https://code.soundsoftware.ac.uk/projects/pyin) algorithm (Mauch & Dixon, 2014) for fundamental frequency estimation via [Sonic Annotator](https://vamp-plugins.org/sonic-annotator/) (Cannam, Jewell, Rhodes, Sandler & d’Invernoand, 2010) for use in the R environment.
 
-# Installation
+## Installation
 
 ```r
 install.packages("devtools")
 devtools::install_github("sebsilas/pyin")
 ```
 
-# Usage
+## Usage
 
 ```r 
 library(pyin)
@@ -38,17 +38,17 @@ my_audio_transcription %>% produce_extra_melodic_features()
 
 ```
 
-# Notes
+## Notes
 
 See https://vamp-plugins.org/sonic-annotator/ for information about allowed file types.
 
 It is possible to also supply transform files, as described there, via the R package version of pYIN (see the `transform_file` argument)
 
-## Compatability
+### Compatability
 
 This R package currently only supports Windows and Mac 64. If you require support for other systems, please get in touch.
 
-# References
+## References
 
 Cannam, C., Jewell, M. O., Rhodes, C., Sandler, M., & d’Inverno, M. (2010). Linked Data And You: Bringing music research software into the Semantic Web. Journal of New Music Research, 39(4), 313–325.
 
