@@ -4,14 +4,14 @@ pyin is an R package which wraps the [pYIN](https://code.soundsoftware.ac.uk/pro
 
 # Installation
 
-`r
+```r
 install.packages("devtools")
 devtools::install_github("sebsilas/pyin")
-`
+```
 
 # Usage
 
-`r 
+```r 
 library(pyin)
 
 # First test using our test function
@@ -36,7 +36,7 @@ my_audio_transcription %>% produce_extra_melodic_features()
 
 # where my_audio_transcription contains a pYIN result.
 
-`
+```
 
 # Notes
 
