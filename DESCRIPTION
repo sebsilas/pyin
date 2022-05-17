@@ -1,6 +1,6 @@
 Package: pyin
 Type: Package
-Title: Fundamental frequency estimation using the probabilistic YIN (pYIN) algorithm.
+Title: Fundamental Frequency Estimation Using The Probabilistic YIN (pYIN) Algorithm.
 Version: 0.1.0
 Author@R: 
     person("Seb", "Silas", email = "sebsilas@gmail.com", 
