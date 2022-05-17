@@ -2,8 +2,11 @@ Package: pyin
 Type: Package
 Title: Fundamental frequency estimation using the probabilistic YIN (pYIN) algorithm.
 Version: 0.1.0
-Author: Seb Silas
-Maintainer: Seb Silas sebsilas@gmail.com
+Author@R: 
+    person("Seb", "Silas", email = "sebsilas@gmail.com", 
+       role = c("aut", "cre").
+       comment = ("ORCID" = "0000-0001-8140-6528"))
+Maintainer: Seb Silas <sebsilas@gmail.com>
 Description: Fundamental frequency estimation using the probabilistic YIN (pYIN) algorithm.
 License: MIT + file LICENSE
 Encoding: UTF-8
