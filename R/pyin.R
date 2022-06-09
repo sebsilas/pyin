@@ -102,7 +102,7 @@ set_osx <- function() {
   vamp_path0 <- system2("echo", args = "$VAMP_PATH")
 
   # potential library path one
-  vamp_path1 <- homePath <- paste0(fs::path_home(), '/Library/Audio/Plug-Ins/Vamp')
+  vamp_path1 <- paste0(fs::path_home(), '/Library/Audio/Plug-Ins/Vamp')
 
   # potential library path 2
   vamp_path2 <- '/Library/Audio/Plug-Ins/Vamp'
@@ -115,6 +115,7 @@ set_osx <- function() {
 
 
 set_linux <- function() {
+
   # package library path
   pkg_path <- system.file('bin/linux64', package = 'pyin')
 
@@ -122,14 +123,11 @@ set_linux <- function() {
 
   vamp_path0 <- system2("echo", args = "$VAMP_PATH")
 
-  # potential library path one
-  vamp_path1 <- homePath <- paste0(fs::path_home(), '/Library/Audio/Plug-Ins/Vamp')
-
-  # potential library path 2
-  vamp_path2 <- '/Library/Audio/Plug-Ins/Vamp'
+  # potential library path 1
+  vamp_path1 <- paste0('/usr/local/lib/vamp')
 
   # put all together separated by a colon
-  dirs <- paste(pkg_path, vamp_path0, vamp_path1, vamp_path2, sep = ":")
+  dirs <- paste(pkg_path, vamp_path0, vamp_path1, sep = ":")
 
   Sys.setenv(VAMP_PATH = dirs)
 }
@@ -176,8 +174,12 @@ pyin_construct_command <- function(args, hidePrint, os) {
 
   if(os == "osx") {
     cmd <- system.file('bin/osx/sonic-annotator', package = 'pyin')
-  } else {
+  } else if(os == "windows") {
     cmd <- system.file('bin/windows64/sonic-annotator64.exe', package = 'pyin')
+  } else if(os == "linux") {
+    cmd <- system.file('bin/linux64/sonic-annotator', package = 'pyin')
+  } else {
+    warning('OS not supported.')
   }
 
   if(hidePrint) {
