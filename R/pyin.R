@@ -107,7 +107,7 @@ set_unix <- function() {
   dirs <- paste(pkg_path, vamp_path0, vamp_path1, vamp_path2, sep = ":")
 
   Sys.setenv(VAMP_PATH = dirs)
-  Sys.getenv("VAMP_PATH")
+  #Sys.getenv("VAMP_PATH")
 }
 
 pyin_tidy <- function(res, type) {
