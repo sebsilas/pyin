@@ -25,9 +25,11 @@ pyin <- function(file_name, transform_file = NULL,
                  normalise = FALSE, hidePrint = TRUE, type = "notes") {
 
 
-  op_sys <- .Platform$OS.type
+  op_sys <- get_os()
 
-  if(op_sys %in% c("unix", "windows")) {
+  print(op_sys)
+
+  if(op_sys %in% c("osx", "linux", "windows")) {
 
     set_vamp_variable(op_sys)
 
@@ -51,15 +53,16 @@ pyin <- function(file_name, transform_file = NULL,
       res <- tibble::tibble(file_name, res)
     }
   } else {
-    warning('Currently only unix supported.')
+    warning('OS not supported.')
   }
 }
 
 set_vamp_variable <- function(os) {
 
-  if(os == "unix") {
-    set_unix()
-
+  if(os == "linux") {
+    set_linux()
+  } else if(os == "osx") {
+    set_osx()
   } else if(os == "windows") {
     set_windows()
   } else {
@@ -89,7 +92,29 @@ set_windows <- function() {
   Sys.getenv("VAMP_PATH")
 }
 
-set_unix <- function() {
+set_osx <- function() {
+
+  # package library path
+  pkg_path <- system.file('bin/osx', package = 'pyin')
+
+  # in case the user already has VAMP plugins installed
+
+  vamp_path0 <- system2("echo", args = "$VAMP_PATH")
+
+  # potential library path one
+  vamp_path1 <- homePath <- paste0(fs::path_home(), '/Library/Audio/Plug-Ins/Vamp')
+
+  # potential library path 2
+  vamp_path2 <- '/Library/Audio/Plug-Ins/Vamp'
+
+  # put all together separated by a colon
+  dirs <- paste(pkg_path, vamp_path0, vamp_path1, vamp_path2, sep = ":")
+
+  Sys.setenv(VAMP_PATH = dirs)
+}
+
+
+set_linux <- function() {
   # package library path
   pkg_path <- system.file('bin/linux64', package = 'pyin')
 
@@ -107,7 +132,6 @@ set_unix <- function() {
   dirs <- paste(pkg_path, vamp_path0, vamp_path1, vamp_path2, sep = ":")
 
   Sys.setenv(VAMP_PATH = dirs)
-  #Sys.getenv("VAMP_PATH")
 }
 
 pyin_tidy <- function(res, type) {
@@ -150,8 +174,8 @@ pyin_construct_args <- function(transform_file, vamp_cmd, file_name, normalise) 
 
 pyin_construct_command <- function(args, hidePrint, os) {
 
-  if(os == "unix") {
-    cmd <- system.file('bin/linux64/sonic-annotator', package = 'pyin')
+  if(os == "osx") {
+    cmd <- system.file('bin/osx/sonic-annotator', package = 'pyin')
   } else {
     cmd <- system.file('bin/windows64/sonic-annotator64.exe', package = 'pyin')
   }
@@ -185,6 +209,23 @@ get_correct_vamp_cmd <- function(type) {
   } else {
     stop("Unknown type")
   }
+}
+
+
+get_os <- function(){
+  sysinf <- Sys.info()
+  if (!is.null(sysinf)){
+    os <- sysinf['sysname']
+    if (os == 'Darwin')
+      os <- "osx"
+  } else { ## mystery machine
+    os <- .Platform$OS.type
+    if (grepl("^darwin", R.version$os))
+      os <- "osx"
+    if (grepl("linux-gnu", R.version$os))
+      os <- "linux"
+  }
+  tolower(os)
 }
 
 # t <- test_pyin()
