@@ -4,7 +4,10 @@
 \alias{test_pyin}
 \title{Test pyin is working}
 \usage{
-test_pyin()
+test_pyin(if_bad_result_return_single_na = TRUE)
+}
+\arguments{
+\item{if_bad_result_return_single_na}{}
 }
 \value{
 

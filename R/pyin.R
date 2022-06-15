@@ -1,13 +1,18 @@
 
+
 #' Test pyin is working
+#'
+#' @param if_bad_result_return_single_na
 #'
 #' @return
 #' @export
 #'
 #' @examples
-test_pyin <- function() {
-  pyin(file_name = system.file('extdata/test.wav', package = 'pyin'))
+test_pyin <- function(if_bad_result_return_single_na = TRUE) {
+  pyin(file_name = system.file('extdata/test.wav', package = 'pyin'),
+       if_bad_result_return_single_na = if_bad_result_return_single_na)
 }
+
 
 #' Compute pYIN on an audio track
 #'
@@ -16,18 +21,70 @@ test_pyin <- function() {
 #' @param normalise
 #' @param hidePrint
 #' @param type
+#' @param if_bad_result_return_single_na
 #'
 #' @return
 #' @export
 #'
 #' @examples
-pyin <- function(file_name, transform_file = NULL,
-                 normalise = FALSE, hidePrint = TRUE, type = "notes") {
+pyin <- function(file_name,
+                 transform_file = NULL,
+                 normalise = FALSE,
+                 hidePrint = TRUE,
+                 type = c("notes", "pitch_track", "both"),
+                 if_bad_result_return_single_na = TRUE) {
 
+  if(length(type) > 1) {
+    type <- type[1]
+  }
+
+  stopifnot(assertthat::is.string(file_name), assertthat::is.string(transform_file) | is.null(transform_file),
+            is.logical(normalise), is.logical(hidePrint),
+            assertthat::is.string(type), is.logical(if_bad_result_return_single_na),
+            type == "notes" | type == "pitch_track" | type == "both")
+
+  if(type == "both") {
+
+    notes_res <- pyin_single(file_name,
+                       transform_file,
+                       normalise,
+                       hidePrint,
+                       "notes",
+                       if_bad_result_return_single_na)
+
+    pitch_track_res <- pyin_single(file_name,
+                             transform_file,
+                             normalise,
+                             hidePrint,
+                             "pitch_track",
+                             if_bad_result_return_single_na)
+
+    res <- list(notes = notes_res,
+                pitch_track = pitch_track_res)
+
+  } else {
+    res <- pyin_single(file_name,
+                       transform_file,
+                       normalise,
+                       hidePrint,
+                       type,
+                       if_bad_result_return_single_na)
+  }
+
+
+  return(res)
+}
+
+
+pyin_single <- function(file_name,
+                        transform_file,
+                        normalise,
+                        hidePrint,
+                        type,
+                        if_bad_result_return_single_na) {
 
   op_sys <- get_os()
 
-  print(op_sys)
 
   if(op_sys %in% c("osx", "linux", "windows")) {
 
@@ -55,6 +112,11 @@ pyin <- function(file_name, transform_file = NULL,
   } else {
     warning('OS not supported.')
   }
+
+  if(if_bad_result_return_single_na & is.null(res$freq) | any(is.na(res$freq))) {
+    res <- NA
+  }
+  return(res)
 }
 
 set_vamp_variable <- function(os) {
@@ -232,3 +294,4 @@ get_os <- function(){
 
 # t <- test_pyin()
 
+# for multiple files...

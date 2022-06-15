@@ -9,11 +9,12 @@ pyin(
   transform_file = NULL,
   normalise = FALSE,
   hidePrint = TRUE,
-  type = "notes"
+  type = c("notes", "pitch_track", "both"),
+  if_bad_result_return_single_na = TRUE
 )
 }
 \arguments{
-\item{type}{}
+\item{if_bad_result_return_single_na}{}
 }
 \value{
 
