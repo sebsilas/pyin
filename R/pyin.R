@@ -38,10 +38,13 @@ pyin <- function(file_name,
     type <- type[1]
   }
 
-  stopifnot(assertthat::is.string(file_name), assertthat::is.string(transform_file) | is.null(transform_file),
-            is.logical(normalise), is.logical(hidePrint),
-            assertthat::is.string(type), is.logical(if_bad_result_return_single_na),
-            type == "notes" | type == "pitch_track" | type == "both")
+  stopifnot(assertthat::is.string(file_name),
+            assertthat::is.string(transform_file) | is.null(transform_file),
+            is.logical(normalise),
+            is.logical(hidePrint),
+            assertthat::is.string(type),
+            is.logical(if_bad_result_return_single_na),
+            type %in% c("notes", "pitch_track", "both"))
 
   if(type == "both") {
 
@@ -113,7 +116,9 @@ pyin_single <- function(file_name,
     warning('OS not supported.')
   }
 
-  if(if_bad_result_return_single_na & is.null(res$freq) | any(is.na(res$freq))) {
+
+  cond <- is.null(res$freq) | all(is.na(res$freq))
+  if(if_bad_result_return_single_na & cond) {
     res <- NA
   }
   return(res)
