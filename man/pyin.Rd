@@ -16,9 +16,6 @@ pyin(
 \arguments{
 \item{if_bad_result_return_single_na}{}
 }
-\value{
-
-}
 \description{
 Compute pYIN on an audio track
 }
