@@ -46,6 +46,9 @@ pyin <- function(file_name,
             is.logical(if_bad_result_return_single_na),
             type %in% c("notes", "pitch_track", "both"))
 
+  logging::loginfo("Calling pyin")
+  logging::loginfo("Type: %s", type)
+
   if(type == "both") {
 
     notes_res <- pyin_single(file_name,
@@ -87,6 +90,8 @@ pyin_single <- function(file_name,
                         if_bad_result_return_single_na) {
 
   op_sys <- get_os()
+
+  logging::loginfo("Operating system: %s", op_sys)
 
 
   if(op_sys %in% c("osx", "linux", "windows")) {
@@ -183,8 +188,12 @@ set_osx <- function() {
 
 set_linux <- function() {
 
+  logging::loginfo("Set linux")
+
   # package library path
   pkg_path <- system.file('bin/linux64', package = 'pyin')
+
+  logging::loginfo("Package path: %s", pkg_path)
 
   # in case the user already has VAMP plugins installed
 
@@ -195,6 +204,8 @@ set_linux <- function() {
 
   # put all together separated by a colon
   dirs <- paste(pkg_path, vamp_path0, vamp_path1, sep = ":")
+
+  logging::loginfo("Vamp dirs: %s", dirs)
 
   Sys.setenv(VAMP_PATH = dirs)
 }
@@ -217,25 +228,25 @@ pyin_tidy <- function(res, type) {
   }
 }
 
-pyin_construct_args <- function(transform_file, vamp_cmd, file_name, normalise) {
-  if(is.null(transform_file)) {
-    args <- c("-d",
-              vamp_cmd,
-              file_name,
-              "-w",
-              "csv --csv-stdout")
-  } else {
-    args <- c(paste0('-t ', transform_file),
-              file_name,
-              "-w",
-              "csv --csv-stdout")
-  }
-
-  if(normalise == 1) {
-    args <- c(args, "--normalise")
-  }
-  args
-}
+# pyin_construct_args <- function(transform_file, vamp_cmd, file_name, normalise) {
+#   if(is.null(transform_file)) {
+#     args <- c("-d",
+#               vamp_cmd,
+#               file_name,
+#               "-w",
+#               "csv --csv-stdout")
+#   } else {
+#     args <- c(paste0('-t ', transform_file),
+#               file_name,
+#               "-w",
+#               "csv --csv-stdout")
+#   }
+#
+#   if(normalise == 1) {
+#     args <- c(args, "--normalise")
+#   }
+#   args
+# }
 
 pyin_construct_command <- function(args, hidePrint, os) {
 
@@ -248,6 +259,8 @@ pyin_construct_command <- function(args, hidePrint, os) {
   } else {
     warning('OS not supported.')
   }
+
+  logging::loginfo("Execute command: %s", cmd)
 
   if(hidePrint) {
     sa_out <- system2(command = cmd,
@@ -297,6 +310,3 @@ get_os <- function(){
   tolower(os)
 }
 
-# t <- test_pyin()
-
-# for multiple files...

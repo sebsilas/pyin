@@ -9,9 +9,6 @@ test_pyin(if_bad_result_return_single_na = TRUE)
 \arguments{
 \item{if_bad_result_return_single_na}{}
 }
-\value{
-
-}
 \description{
 Test pyin is working
 }

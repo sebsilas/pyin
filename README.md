@@ -1,6 +1,6 @@
 # pYIN R package
 
-pyin is an R package which wraps the [pYIN](https://code.soundsoftware.ac.uk/projects/pyin) algorithm (Mauch & Dixon, 2014) for fundamental frequency estimation via [Sonic Annotator](https://vamp-plugins.org/sonic-annotator/) (Cannam, Jewell, Rhodes, Sandler & d’Invernoand, 2010) for use in the R environment.
+*pyin* is an R package which wraps the [pYIN](https://code.soundsoftware.ac.uk/projects/pyin) algorithm (Mauch & Dixon, 2014) for fundamental frequency estimation via [Sonic Annotator](https://vamp-plugins.org/sonic-annotator/) (Cannam, Jewell, Rhodes, Sandler & d’Invernoand, 2010) for use in the R environment.
 
 ## Installation
 
