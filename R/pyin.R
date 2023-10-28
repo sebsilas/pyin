@@ -228,25 +228,25 @@ pyin_tidy <- function(res, type) {
   }
 }
 
-# pyin_construct_args <- function(transform_file, vamp_cmd, file_name, normalise) {
-#   if(is.null(transform_file)) {
-#     args <- c("-d",
-#               vamp_cmd,
-#               file_name,
-#               "-w",
-#               "csv --csv-stdout")
-#   } else {
-#     args <- c(paste0('-t ', transform_file),
-#               file_name,
-#               "-w",
-#               "csv --csv-stdout")
-#   }
-#
-#   if(normalise == 1) {
-#     args <- c(args, "--normalise")
-#   }
-#   args
-# }
+pyin_construct_args <- function(transform_file, vamp_cmd, file_name, normalise) {
+  if(is.null(transform_file)) {
+    args <- c("-d",
+              vamp_cmd,
+              file_name,
+              "-w",
+              "csv --csv-stdout")
+  } else {
+    args <- c(paste0('-t ', transform_file),
+              file_name,
+              "-w",
+              "csv --csv-stdout")
+  }
+
+  if(normalise == 1) {
+    args <- c(args, "--normalise")
+  }
+  args
+}
 
 pyin_construct_command <- function(args, hidePrint, os) {
 
